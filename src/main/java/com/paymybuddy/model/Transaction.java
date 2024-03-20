@@ -32,10 +32,10 @@ public class Transaction {
     private String description;
 
     @Column(nullable = false)
-    private double amount;
+    private double transactionAmount;
 
     @Column(nullable = false)
-    private double commission;
+    private double commissionAmount;
 
 
     @ManyToOne

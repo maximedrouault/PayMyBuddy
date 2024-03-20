@@ -1,5 +1,6 @@
 package com.paymybuddy.controller;
 
+import com.paymybuddy.dto.CommissionDTO;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.TransactionService;
@@ -25,10 +26,15 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction")
-    public Transaction saveTransaction(@RequestParam int senderUserId, int receiverUserId, String description, double amount) {
+    public Transaction saveTransaction(@RequestParam int senderUserId, int receiverUserId, String description, double transactionAmount) {
         User senderUser = userService.getUserById(senderUserId);
         User receiverUser = userService.getUserById(receiverUserId);
 
-        return transactionService.saveTransaction(senderUser, receiverUser, description, amount);
+        return transactionService.saveTransaction(senderUser, receiverUser, description, transactionAmount);
+    }
+
+    @GetMapping("/commissions")
+    public List<CommissionDTO> getCommissions() {
+        return transactionService.getCommissions();
     }
 }

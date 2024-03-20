@@ -10,7 +10,7 @@ VALUES ('user1@example.com', 'pass123', 'User One', 'FR7612345987654321098765432
        ('user3@example.com', 'pass789', 'User Three', 'FR78345678909876543212345678', 3);
 
 
-INSERT INTO transaction (transaction_id, amount, commission, date, time, description, sender_user_id, receiver_user_id)
+INSERT INTO transaction (transaction_id, transaction_amount, commission_amount, date, time, description, sender_user_id, receiver_user_id)
 VALUES (1, 100.00, 5, '2022-03-01', '10:00:00', 'Transaction 1', 1, 2),
        (2, 200.00, 10, '2022-03-02', '11:00:00', 'Transaction 2', 1, 3),
        (3, 300.00, 15, '2022-03-03', '12:00:00', 'Transaction 3', 2, 1),

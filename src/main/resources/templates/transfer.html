@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PayMyBuddy - Transfer</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <header class="container-fluid">
+
+<!--    Navbar-->
+        <div class="row m-2">
+            <nav class="navbar navbar-expand-md navbar-light">
+                <a class="navbar-brand btn btn-lg btn-success bg-gradient text-light" href="#">Pay My Buddy</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav fw-semibold text-dark">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active text-primary" href="#">Transfer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Log off</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+<!--    BreadCrumb-->
+        <div class="row">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light p-3 fw-semibold">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Transfer</li>
+                </ol>
+            </nav>
+        </div>
+    </header>
+
+<!--    <div class="row">-->
+<!--        <nav style="&#45;&#45;bs-breadcrumb-divider: '>';" aria-label="breadcrumb">-->
+<!--            <ol class="breadcrumb py-4">-->
+<!--                <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+<!--                <li class="breadcrumb-item active" aria-current="page">Library</li>-->
+<!--            </ol>-->
+<!--        </nav>-->
+<!--    </div>-->
+
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+</html>

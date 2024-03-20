@@ -1,11 +1,9 @@
 package com.paymybuddy.service;
 
 import com.paymybuddy.model.Wallet;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class WalletService {
 
     public void withdrawMoney(Wallet wallet, double amountToWithdraw) {

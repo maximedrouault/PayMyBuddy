@@ -1,5 +1,6 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.dto.CommissionDTO;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.TransactionRepository;
@@ -23,10 +24,10 @@ public class TransactionService {
         return transactionRepository.findTransactionsBySender_UserId(senderUserId);
     }
 
-    public Transaction saveTransaction(User senderUser, User receiverUser, String description, double amount) {
+    public Transaction saveTransaction(User senderUser, User receiverUser, String description, double transactionAmount) {
         double commissionFactor = 0.05; // 0.05 is the commission factor (5%)
-        double commission = Math.round((amount * commissionFactor) * 100.0) / 100.0; //  the result is rounded
-        amount = Math.round(amount * 100.0) / 100.0;
+        double commissionAmount = Math.round((transactionAmount * commissionFactor) * 100.0) / 100.0; //  the result is rounded
+        transactionAmount = Math.round(transactionAmount * 100.0) / 100.0;
 
         Transaction transactionToSave = Transaction.builder()
                 .date(LocalDate.now())
@@ -34,13 +35,26 @@ public class TransactionService {
                 .description(description)
                 .sender(senderUser)
                 .receiver(receiverUser)
-                .amount(amount)
-                .commission(commission)
+                .transactionAmount(transactionAmount)
+                .commissionAmount(commissionAmount)
                 .build();
 
-        walletService.withdrawMoney(senderUser.getWallet(), amount + commission);
-        walletService.addMoney(receiverUser.getWallet(), amount);
+        walletService.withdrawMoney(senderUser.getWallet(), transactionAmount + commissionAmount);
+        walletService.addMoney(receiverUser.getWallet(), transactionAmount);
 
         return transactionRepository.save(transactionToSave);
+    }
+
+    public List<CommissionDTO> getCommissions() {
+        List<Transaction> transactions = (List<Transaction>) transactionRepository.findAll();
+
+        return transactions.stream()
+                .map(transaction -> CommissionDTO.builder()
+                        .transactionId(transaction.getTransactionId())
+                        .date(transaction.getDate())
+                        .time(transaction.getTime())
+                        .commissionAmount(transaction.getCommissionAmount())
+                        .build())
+                .toList();
     }
 }
