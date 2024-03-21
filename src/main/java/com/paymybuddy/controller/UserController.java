@@ -24,8 +24,8 @@ public class UserController {
         return userService.saveUser(userToAdd);
     }
 
-    @GetMapping("/users")
-    public List<User> getOtherUsers(@RequestParam int currentUserId) {
-        return userService.getOtherUsers(currentUserId);
+    @GetMapping("/connectableUsers")
+    public List<User> getConnectableUsers(@RequestParam int currentUserId) {
+        return userService.getConnectableUsers(currentUserId);
     }
 }

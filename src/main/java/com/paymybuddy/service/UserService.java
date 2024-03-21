@@ -1,5 +1,6 @@
 package com.paymybuddy.service;
 
+import com.paymybuddy.model.Connection;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ConnectionService connectionService;
 
     public User getUserByEmail(String userEmail) {
         return userRepository.findUserByEmail(userEmail);
@@ -26,7 +28,15 @@ public class UserService {
     }
 
 
-    public List<User> getOtherUsers(int currentUserId) {
-        return userRepository.findUsersByUserIdIsNot(currentUserId);
+    public List<User> getConnectableUsers(int currentUserId) {
+        List<User> connectableUsers = userRepository.findUsersByUserIdIsNot(currentUserId);
+        List<User> connectedUsers = connectionService.getConnections(currentUserId)
+                .stream()
+                .map(Connection::getReceiver)
+                .toList();
+
+        connectableUsers.removeAll(connectedUsers);
+
+        return connectableUsers;
     }
 }
