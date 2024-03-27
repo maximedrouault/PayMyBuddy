@@ -1,18 +1,25 @@
 package com.paymybuddy.controller;
 
 
+import com.paymybuddy.dto.ConnectionForm;
+import com.paymybuddy.dto.TransactionForm;
 import com.paymybuddy.model.Connection;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.ConnectionService;
 import com.paymybuddy.service.TransactionService;
 import com.paymybuddy.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -25,8 +32,8 @@ public class TransferViewController {
     private final UserService userService;
 
 
-    @GetMapping("/transfer")
-    public String transferView(@RequestParam int currentUserId, Model model) {
+    @ModelAttribute
+    public void populateModel(@RequestParam @NotNull int currentUserId, Model model) {
         List<Connection> connections = connectionService.getConnections(currentUserId);
         List<Transaction> transactions = transactionService.getTransactions(currentUserId);
         List<User> connectableUsers = userService.getConnectableUsers(currentUserId);
@@ -35,28 +42,60 @@ public class TransferViewController {
         model.addAttribute("connections", connections);
         model.addAttribute("transactions", transactions);
         model.addAttribute("connectableUsers", connectableUsers);
+        model.addAttribute("transactionForm", new TransactionForm());
+        model.addAttribute("connectionForm", new ConnectionForm());
+    }
 
+
+    @GetMapping("/transfer")
+    public String transferView() {
         return "transfer";
     }
 
     @PostMapping("/connection")
-    public String addConnection(@RequestParam int ownerUserId, @RequestParam int receiverUserId) {
-        User ownerUser = userService.getUserById(ownerUserId);
-        User receiverUser = userService.getUserById(receiverUserId);
+    public String addConnection(@RequestParam @NotNull int currentUserId,
+                                @Valid @ModelAttribute ConnectionForm connectionForm,
+                                BindingResult result, RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            return "transfer";
+        }
+
+        User ownerUser = userService.getUserById(currentUserId);
+        User receiverUser = userService.getUserById(connectionForm.getReceiverUserId());
 
         connectionService.addConnection(ownerUser, receiverUser);
+        redirectAttributes.addFlashAttribute("successMessage", "Connection added successfully");
 
-        return "redirect:/transfer?currentUserId=" + ownerUserId;
+        return "redirect:/transfer?currentUserId=" + currentUserId;
     }
 
     @PostMapping("/transaction")
-    public String addTransaction(@RequestParam int senderUserId, @RequestParam int receiverUserId, @RequestParam double transactionAmount) {
-        User senderUser = userService.getUserById(senderUserId);
-        User receiverUser = userService.getUserById(receiverUserId);
-        String description = "Test description"; // TODO : Not present in UI Design
+    public String addTransaction(@RequestParam @NotNull int currentUserId,
+                                 @Valid @ModelAttribute TransactionForm transactionForm,
+                                 BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-        transactionService.saveTransaction(senderUser, receiverUser, description, transactionAmount);
+        if (result.hasErrors()) {
+            return "transfer";
+        }
 
-        return "redirect:/transfer?currentUserId=" + senderUserId;
+        User senderUser = userService.getUserById(currentUserId);
+        User receiverUser = userService.getUserById(transactionForm.getReceiverUserId());
+
+        if (senderUser.getWallet().getBalance() < transactionForm.getTransactionAmount()) {
+            model.addAttribute("errorMessage", "The balance cannot be under 0. Please, add money to your wallet before transaction");
+
+            return "transfer";
+
+        } else {
+            Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionForm.getDescription(), transactionForm.getTransactionAmount());
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Transaction added successfully  : Sender - " + savedTransaction.getSender().getName() +
+                            " / Receiver - " + savedTransaction.getReceiver().getName() +
+                            " / Transaction Amount : " + savedTransaction.getTransactionAmount() + " €" +
+                            " / Commission amount : " + savedTransaction.getCommissionAmount() + " €");
+        }
+
+        return "redirect:/transfer?currentUserId=" + currentUserId;
     }
 }

@@ -31,7 +31,7 @@ public class ConnectionController {
 //    }
 
     @DeleteMapping("/connection")
-    public Integer deleteConnection(@RequestParam int ownerUserId, int receiverUserId) {
-        return connectionService.deleteConnection(ownerUserId, receiverUserId);
+    public Integer deleteConnection(@RequestParam int currentUserId, int receiverUserId) {
+        return connectionService.deleteConnection(currentUserId, receiverUserId);
     }
 }

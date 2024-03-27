@@ -62,20 +62,26 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddConnection">Add Connection</button>
             </div>
         </div>
-        <form th:action="@{transaction(senderUserId = ${currentUserId})}" method="post">
+        <form th:action="@{/transaction(currentUserId = ${currentUserId})}" th:object="${transactionForm}" method="post">
             <div class="container bg-light py-5">
                 <div class="row justify-content-center gy-3 gx-md-5">
-                    <div class="col-12 col-md-4">
-                        <select class="form-select" name="receiverUserId" aria-label="Select A Connection">
-                            <option selected>Select A Connection</option>
+                    <div class="col-12 col-md-3">
+                        <select class="form-select border border-black border-2 rounded-0" th:field="*{receiverUserId}" aria-label="Select A Connection">
+                            <option selected value="">Select A Connection</option>
                             <option th:each="connection : ${connections}"
-                                    th:text="${connection.getReceiver().getEmail()}"
-                                    th:value="${connection.getReceiver().getUserId()}">
+                                    th:text="${connection.receiver.email}"
+                                    th:value="${connection.receiver.userId}">
                             </option>
                         </select>
+                        <p th:if="${#fields.hasErrors('receiverUserId')}" th:errors="*{receiverUserId}" class="alert alert-danger mt-3"></p>
                     </div>
-                    <div class="col-12 col-md-3">
-                        <input type="number" class="form-control text-end" name="transactionAmount" step="0.01" placeholder="0€" aria-label="Amount">
+                    <div class="col-12 col-md-4">
+                        <input type="text" class="form-control border border-black border-2 rounded-0" th:field="*{description}" placeholder="Enter a short description" aria-label="description">
+                        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger mt-3"></p>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input type="number" class="form-control text-end border border-black border-2 rounded-0" th:field="*{transactionAmount}" step="0.01" placeholder="0€" aria-label="transactionAmount">
+                        <p th:if="${#fields.hasErrors('transactionAmount')}" th:errors="*{transactionAmount}" class="alert alert-danger mt-3"></p>
                     </div>
                     <div class="col-6 col-md-2 text-center">
                         <button type="submit" class="btn btn-success w-100">Pay</button>
@@ -83,6 +89,9 @@
                 </div>
             </div>
         </form>
+        <p th:if="${errorMessage != null}" class="alert alert-danger text-center mt-3" th:text="${errorMessage}"></p>
+        <p th:if="${successMessage != null}" class="alert alert-success text-center mt-3" th:text="${successMessage}"></p>
+
     </section>
 
 <!--    Section "My Transactions"-->
@@ -90,20 +99,20 @@
         <div class="row mt-4">
             <h2 class="mb-2 fs-4 fw-semibold">My Transactions</h2>
         </div>
-        <div class="table-responsive">
+        <div class="table-responsive border border-2 border-black">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th scope="col" class="bg-success text-white text-center">Connections</th>
-                        <th scope="col" class="bg-success text-white text-center">Description</th>
-                        <th scope="col" class="bg-success text-white text-center">Amount</th>
+                        <th scope="col" class="bg-success text-white text-center py-5">Connections</th>
+                        <th scope="col" class="bg-success text-white text-center py-5">Description</th>
+                        <th scope="col" class="bg-success text-white text-center py-5">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="transaction : ${transactions}">
-                        <td th:text="${transaction.getReceiver().getName()}" class="text-center"></td>
-                        <td th:text="${transaction.getDescription()}" class="text-center"></td>
-                        <td th:text="${#numbers.formatCurrency(transaction.getTransactionAmount())}" class="text-center"></td>
+                        <td th:text="${transaction.receiver.name}" class="text-center py-5"></td>
+                        <td th:text="${transaction.description}" class="text-center py-5"></td>
+                        <td th:text="${#numbers.formatCurrency(transaction.transactionAmount)}" class="text-center py-5"></td>
                     </tr>
                 </tbody>
             </table>
@@ -129,8 +138,8 @@
         </nav>
     </section>
 
-    <!-- Modal -->
-    <form th:action="@{connection(ownerUserId = ${currentUserId})}" method="post">
+<!--    Modal "Add connection"-->
+    <form th:action="@{connection(currentUserId = ${currentUserId})}" th:object="${connectionForm}" method="post">
         <div class="modal fade" id="modalAddConnection" tabindex="-1" aria-labelledby="AddConnectionModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -140,10 +149,10 @@
                     </div>
                     <div class="modal-body">
                         <h2 class="fs-5 mb-3">Select a user to connect</h2>
-                        <select class="form-select" name="receiverUserId" aria-label="Select a user to connect">
+                        <select class="form-select" name="selectConnectableUser" th:name="receiverUserId" aria-label="Select a user to connect">
                             <option th:each="connectableUser : ${connectableUsers}"
-                                    th:value="${connectableUser.getUserId()}"
-                                    th:text="${connectableUser.getEmail()}">
+                                    th:value="${connectableUser.userId}"
+                                    th:text="${connectableUser.email}">
                             </option>
                         </select>
                     </div>
