@@ -10,8 +10,10 @@ import com.paymybuddy.service.ConnectionService;
 import com.paymybuddy.service.TransactionService;
 import com.paymybuddy.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,9 +35,9 @@ public class TransferViewController {
 
 
     @ModelAttribute
-    public void populateModel(@RequestParam @NotNull int currentUserId, Model model) {
+    public void populateModel(@RequestParam @NotNull int currentUserId, @RequestParam(defaultValue = "0") @Min(0) int currentPageNumber, Model model) {
         List<Connection> connections = connectionService.getConnections(currentUserId);
-        List<Transaction> transactions = transactionService.getTransactions(currentUserId);
+        Page<Transaction> transactions = transactionService.getTransactions(currentUserId, currentPageNumber);
         List<User> connectableUsers = userService.getConnectableUsers(currentUserId);
 
         model.addAttribute("currentUserId", currentUserId);
@@ -44,6 +46,8 @@ public class TransferViewController {
         model.addAttribute("connectableUsers", connectableUsers);
         model.addAttribute("transactionForm", new TransactionForm());
         model.addAttribute("connectionForm", new ConnectionForm());
+        model.addAttribute("pages", new int[transactions.getTotalPages()]);
+        model.addAttribute("currentPageNumber", currentPageNumber);
     }
 
 
@@ -73,7 +77,7 @@ public class TransferViewController {
     @PostMapping("/transaction")
     public String addTransaction(@RequestParam @NotNull int currentUserId,
                                  @Valid @ModelAttribute TransactionForm transactionForm,
-                                 BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+                                 BindingResult result, RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
             return "transfer";
@@ -83,9 +87,9 @@ public class TransferViewController {
         User receiverUser = userService.getUserById(transactionForm.getReceiverUserId());
 
         if (senderUser.getWallet().getBalance() < transactionForm.getTransactionAmount()) {
-            model.addAttribute("errorMessage", "The balance cannot be under 0. Please, add money to your wallet before transaction");
+            redirectAttributes.addFlashAttribute("errorMessage", "The balance cannot be under 0. Please, add money to your wallet before transaction");
 
-            return "transfer";
+            return "redirect:/transfer?currentUserId=" + currentUserId;
 
         } else {
             Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionForm.getDescription(), transactionForm.getTransactionAmount());

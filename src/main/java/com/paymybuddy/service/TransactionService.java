@@ -5,6 +5,10 @@ import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,8 +24,11 @@ public class TransactionService {
     private final WalletService walletService;
 
 
-    public List<Transaction> getTransactions(int senderUserId) {
-        return transactionRepository.findTransactionsBySender_UserId(senderUserId);
+    public Page<Transaction> getTransactions(int senderUserId, int currentPageNumber) {
+        Sort orderedTransactions = Sort.by(Sort.Order.desc("date"), Sort.Order.desc("time"));
+        Pageable paginatedTransactions = PageRequest.of(currentPageNumber, 3, orderedTransactions);
+
+        return transactionRepository.findTransactionsBySender_UserId(senderUserId, paginatedTransactions);
     }
 
     public Transaction saveTransaction(User senderUser, User receiverUser, String description, double transactionAmount) {
