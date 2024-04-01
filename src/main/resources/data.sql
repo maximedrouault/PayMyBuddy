@@ -7,11 +7,11 @@ VALUES  (1, 1200.00),
 
 
 INSERT INTO user (email, password, name, bank_account_number, wallet_id)
-VALUES  ('user1@example.com', 'pass1Unique', 'User One', 'FR12345678901234567890123456', 1),
-        ('user2@example.com', 'pass2Unique', 'User Two', 'FR22345678901234567890123456', 2),
-        ('user3@example.com', 'pass3Unique', 'User Three', 'FR32345678901234567890123456', 3),
-        ('user4@example.com', 'pass4Unique', 'User Four', 'FR42345678901234567890123456', 4),
-        ('user5@example.com', 'pass5Unique', 'User Five', 'FR52345678901234567890123456', 5);
+VALUES  ('user1@example.com', '$2a$12$b2dB2W39ThUNSK3DBrRoTe9mJMkopItV4SuUqxK37fYfR9HWlZeO2', 'User One', 'FR12345678901234567890123456', 1),
+        ('user2@example.com', '$2a$12$b2dB2W39ThUNSK3DBrRoTe9mJMkopItV4SuUqxK37fYfR9HWlZeO2', 'User Two', 'FR22345678901234567890123456', 2),
+        ('user3@example.com', '$2a$12$b2dB2W39ThUNSK3DBrRoTe9mJMkopItV4SuUqxK37fYfR9HWlZeO2', 'User Three', 'FR32345678901234567890123456', 3),
+        ('user4@example.com', '$2a$12$b2dB2W39ThUNSK3DBrRoTe9mJMkopItV4SuUqxK37fYfR9HWlZeO2', 'User Four', 'FR42345678901234567890123456', 4),
+        ('user5@example.com', '$2a$12$b2dB2W39ThUNSK3DBrRoTe9mJMkopItV4SuUqxK37fYfR9HWlZeO2', 'User Five', 'FR52345678901234567890123456', 5);
 
 
 INSERT INTO transaction (transaction_amount, commission_amount, date, time, description, sender_user_id, receiver_user_id)

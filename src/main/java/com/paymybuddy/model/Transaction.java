@@ -26,7 +26,6 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private int transactionId;
 
     @Column(nullable = false)

@@ -34,7 +34,9 @@
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Log off</a>
+                            <form method="post" th:action="@{/logout}">
+                                <button class="nav-link" type="submit">Log off</button>
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -62,7 +64,7 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddConnection">Add Connection</button>
             </div>
         </div>
-        <form th:action="@{/transaction(currentUserId = ${currentUserId})}" th:object="${transactionForm}" method="post">
+        <form th:action="@{/transaction(currentUserId = ${currentUserId})}" th:object="${transactionFormDTO}" method="post">
             <div class="container bg-light py-5">
                 <div class="row justify-content-center gy-3 gx-md-5">
                     <div class="col-12 col-md-3">
@@ -122,15 +124,15 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center mt-3">
                 <li class="page-item" th:unless="${currentPageNumber == 0}">
-                    <a th:href="@{transfer(currentUserId = ${currentUserId}, currentPageNumber = ${currentPageNumber - 1})}" class="page-link" href="#" aria-label="Previous">
+                    <a th:href="@{/transfer(currentUserId = ${currentUserId}, currentPageNumber = ${currentPageNumber - 1})}" class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li th:each="page, status : ${pages}" class="page-item">
-                    <a th:href="@{transfer(currentUserId = ${currentUserId}, currentPageNumber = ${status.index})}" th:text="${status.index + 1}" class="page-link" href="#"></a>
+                    <a th:href="@{/transfer(currentUserId = ${currentUserId}, currentPageNumber = ${status.index})}" th:text="${status.index + 1}" class="page-link" href="#"></a>
                 </li>
                 <li class="page-item" th:unless="${currentPageNumber == pages.length - 1}">
-                    <a th:href="@{transfer(currentUserId = ${currentUserId}, currentPageNumber = ${currentPageNumber + 1})}" class="page-link" href="#" aria-label="Next">
+                    <a th:href="@{/transfer(currentUserId = ${currentUserId}, currentPageNumber = ${currentPageNumber + 1})}" class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -139,7 +141,7 @@
     </section>
 
 <!--    Modal "Add connection"-->
-    <form th:action="@{connection(currentUserId = ${currentUserId})}" th:object="${connectionForm}" method="post">
+    <form th:action="@{/connection(currentUserId = ${currentUserId})}" th:object="${connectionForm}" method="post">
         <div class="modal fade" id="modalAddConnection" tabindex="-1" aria-labelledby="AddConnectionModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

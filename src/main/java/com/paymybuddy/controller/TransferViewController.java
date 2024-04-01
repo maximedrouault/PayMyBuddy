@@ -2,7 +2,7 @@ package com.paymybuddy.controller;
 
 
 import com.paymybuddy.dto.ConnectionForm;
-import com.paymybuddy.dto.TransactionForm;
+import com.paymybuddy.dto.TransactionFormDTO;
 import com.paymybuddy.model.Connection;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Controller
@@ -44,8 +45,8 @@ public class TransferViewController {
         model.addAttribute("connections", connections);
         model.addAttribute("transactions", transactions);
         model.addAttribute("connectableUsers", connectableUsers);
-        model.addAttribute("transactionForm", new TransactionForm());
-        model.addAttribute("connectionForm", new ConnectionForm());
+        model.addAttribute("transactionFormDTO", new TransactionFormDTO());
+        model.addAttribute("connectionFormDTO", new ConnectionForm());
         model.addAttribute("pages", new int[transactions.getTotalPages()]);
         model.addAttribute("currentPageNumber", currentPageNumber);
     }
@@ -76,7 +77,7 @@ public class TransferViewController {
 
     @PostMapping("/transaction")
     public String addTransaction(@RequestParam @NotNull int currentUserId,
-                                 @Valid @ModelAttribute TransactionForm transactionForm,
+                                 @Valid @ModelAttribute TransactionFormDTO transactionFormDTO,
                                  BindingResult result, RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
@@ -84,20 +85,22 @@ public class TransferViewController {
         }
 
         User senderUser = userService.getUserById(currentUserId);
-        User receiverUser = userService.getUserById(transactionForm.getReceiverUserId());
+        User receiverUser = userService.getUserById(transactionFormDTO.getReceiverUserId());
 
-        if (senderUser.getWallet().getBalance() < transactionForm.getTransactionAmount()) {
+        if (senderUser.getWallet().getBalance() < transactionFormDTO.getTransactionAmount()) {
             redirectAttributes.addFlashAttribute("errorMessage", "The balance cannot be under 0. Please, add money to your wallet before transaction");
 
             return "redirect:/transfer?currentUserId=" + currentUserId;
 
         } else {
-            Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionForm.getDescription(), transactionForm.getTransactionAmount());
+            Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionFormDTO.getDescription(), transactionFormDTO.getTransactionAmount());
+
+            DecimalFormat df = new DecimalFormat("0.00");
             redirectAttributes.addFlashAttribute("successMessage",
-                    "Transaction added successfully  : Sender - " + savedTransaction.getSender().getName() +
+                    "Transaction completed successfully  : Sender - " + savedTransaction.getSender().getName() +
                             " / Receiver - " + savedTransaction.getReceiver().getName() +
-                            " / Transaction Amount : " + savedTransaction.getTransactionAmount() + " €" +
-                            " / Commission amount : " + savedTransaction.getCommissionAmount() + " €");
+                            " / Transaction Amount : " + df.format(savedTransaction.getTransactionAmount()) + " €" +
+                            " / Commission amount : " + df.format(savedTransaction.getCommissionAmount()) + " €");
         }
 
         return "redirect:/transfer?currentUserId=" + currentUserId;

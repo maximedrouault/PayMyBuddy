@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class TransactionForm {
+public class TransactionFormDTO {
 
     @NotNull(message = "Cannot be null. Please, make a choice")
     private Integer receiverUserId;
