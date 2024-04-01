@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ConnectionRepository extends CrudRepository<Connection, Integer> {
 
-    List<Connection> findConnectionsByOwner_UserId(int ownerUserId);
+    List<Connection> findConnectionsByOwner_Email(String ownerUserEmail);
 
     Integer deleteConnectionByOwner_UserIdAndReceiver_UserId(int ownerUserId, int receiverUserId);
 }

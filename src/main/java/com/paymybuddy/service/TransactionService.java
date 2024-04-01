@@ -24,11 +24,18 @@ public class TransactionService {
     private final WalletService walletService;
 
 
-    public Page<Transaction> getTransactions(int senderUserId, int currentPageNumber) {
+//    public Page<Transaction> getTransactions(int senderUserId, int currentPageNumber) {
+//        Sort orderedTransactions = Sort.by(Sort.Order.desc("date"), Sort.Order.desc("time"));
+//        Pageable paginatedTransactions = PageRequest.of(currentPageNumber, 3, orderedTransactions);
+//
+//        return transactionRepository.findTransactionsBySender_UserId(senderUserId, paginatedTransactions);
+//    }
+
+    public Page<Transaction> getTransactions(String senderUserEmail, int currentPageNumber) {
         Sort orderedTransactions = Sort.by(Sort.Order.desc("date"), Sort.Order.desc("time"));
         Pageable paginatedTransactions = PageRequest.of(currentPageNumber, 3, orderedTransactions);
 
-        return transactionRepository.findTransactionsBySender_UserId(senderUserId, paginatedTransactions);
+        return transactionRepository.findTransactionsBySender_Email(senderUserEmail, paginatedTransactions);
     }
 
     public Transaction saveTransaction(User senderUser, User receiverUser, String description, double transactionAmount) {

@@ -5,6 +5,7 @@ import com.paymybuddy.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/connectableUsers")
-    public List<User> getConnectableUsers(@RequestParam int currentUserId) {
-        return userService.getConnectableUsers(currentUserId);
+    public List<User> getConnectableUsers(Principal principal) {
+        return userService.getConnectableUsers(principal.getName());
     }
 }

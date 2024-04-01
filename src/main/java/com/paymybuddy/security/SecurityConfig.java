@@ -16,9 +16,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .formLogin(formLogin -> formLogin
-                        .defaultSuccessUrl("/transfer?currentUserId=3", true)
+                        .defaultSuccessUrl("/transfer", true)
                         .permitAll())
-                .authorizeHttpRequests(ar -> ar.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .build();
     }
 

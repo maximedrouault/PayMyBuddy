@@ -28,9 +28,9 @@ public class UserService {
     }
 
 
-    public List<User> getConnectableUsers(int currentUserId) {
-        List<User> connectableUsers = userRepository.findUsersByUserIdIsNot(currentUserId);
-        List<User> connectedUsers = connectionService.getConnections(currentUserId)
+    public List<User> getConnectableUsers(String currentUserEmail) {
+        List<User> connectableUsers = userRepository.findUsersByEmailIsNot(currentUserEmail);
+        List<User> connectedUsers = connectionService.getConnections(currentUserEmail)
                 .stream()
                 .map(Connection::getReceiver)
                 .toList();

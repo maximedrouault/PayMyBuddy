@@ -16,8 +16,8 @@ public class ConnectionService {
     private final ConnectionRepository connectionRepository;
 
 
-    public List<Connection> getConnections(int ownerUserId) {
-        return connectionRepository.findConnectionsByOwner_UserId(ownerUserId);
+    public List<Connection> getConnections(String ownerUserEmail) {
+        return connectionRepository.findConnectionsByOwner_Email(ownerUserEmail);
     }
 
     public Connection addConnection(User ownerUser, User receiverUser) {

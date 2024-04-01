@@ -1,12 +1,9 @@
 package com.paymybuddy.controller;
 
 import com.paymybuddy.dto.CommissionDTO;
-import com.paymybuddy.model.Transaction;
 import com.paymybuddy.service.TransactionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,10 +14,10 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @GetMapping("/transactions")
-    public Page<Transaction> getTransactions(@RequestParam int senderUserId, @RequestParam int currentPageNumber) {
-        return transactionService.getTransactions(senderUserId, currentPageNumber);
-    }
+//    @GetMapping("/transactions")
+//    public Page<Transaction> getTransactions(@RequestParam int senderUserId, @RequestParam int currentPageNumber) {
+//        return transactionService.getTransactions(senderUserId, currentPageNumber);
+//    }
 
 //    @PostMapping("/transaction")
 //    public Transaction saveTransaction(@RequestParam int senderUserId, int receiverUserId, String description, double transactionAmount) {

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -36,12 +37,11 @@ public class TransferViewController {
 
 
     @ModelAttribute
-    public void populateModel(@RequestParam @NotNull int currentUserId, @RequestParam(defaultValue = "0") @Min(0) int currentPageNumber, Model model) {
-        List<Connection> connections = connectionService.getConnections(currentUserId);
-        Page<Transaction> transactions = transactionService.getTransactions(currentUserId, currentPageNumber);
-        List<User> connectableUsers = userService.getConnectableUsers(currentUserId);
+    public void populateModel(@NotNull Principal principal, @RequestParam(defaultValue = "0") @Min(0) int currentPageNumber, Model model) {
+        List<Connection> connections = connectionService.getConnections(principal.getName());
+        Page<Transaction> transactions = transactionService.getTransactions(principal.getName(), currentPageNumber);
+        List<User> connectableUsers = userService.getConnectableUsers(principal.getName());
 
-        model.addAttribute("currentUserId", currentUserId);
         model.addAttribute("connections", connections);
         model.addAttribute("transactions", transactions);
         model.addAttribute("connectableUsers", connectableUsers);
@@ -58,7 +58,7 @@ public class TransferViewController {
     }
 
     @PostMapping("/connection")
-    public String addConnection(@RequestParam @NotNull int currentUserId,
+    public String addConnection(@NotNull Principal principal,
                                 @Valid @ModelAttribute ConnectionForm connectionForm,
                                 BindingResult result, RedirectAttributes redirectAttributes) {
 
@@ -66,17 +66,24 @@ public class TransferViewController {
             return "transfer";
         }
 
-        User ownerUser = userService.getUserById(currentUserId);
+        User ownerUser = userService.getUserByEmail(principal.getName());
         User receiverUser = userService.getUserById(connectionForm.getReceiverUserId());
 
-        connectionService.addConnection(ownerUser, receiverUser);
-        redirectAttributes.addFlashAttribute("successMessage", "Connection added successfully");
+        Connection addedConnection = connectionService.addConnection(ownerUser, receiverUser);
 
-        return "redirect:/transfer?currentUserId=" + currentUserId;
+        if (addedConnection != null) {
+            redirectAttributes.addFlashAttribute("successMessage", "Connection added successfully");
+
+            return "redirect:/transfer";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Connection unsuccessfully added");
+        }
+
+        return "redirect:/transfer";
     }
 
     @PostMapping("/transaction")
-    public String addTransaction(@RequestParam @NotNull int currentUserId,
+    public String addTransaction(@NotNull Principal principal,
                                  @Valid @ModelAttribute TransactionFormDTO transactionFormDTO,
                                  BindingResult result, RedirectAttributes redirectAttributes) {
 
@@ -84,13 +91,13 @@ public class TransferViewController {
             return "transfer";
         }
 
-        User senderUser = userService.getUserById(currentUserId);
+        User senderUser = userService.getUserByEmail(principal.getName());
         User receiverUser = userService.getUserById(transactionFormDTO.getReceiverUserId());
 
         if (senderUser.getWallet().getBalance() < transactionFormDTO.getTransactionAmount()) {
             redirectAttributes.addFlashAttribute("errorMessage", "The balance cannot be under 0. Please, add money to your wallet before transaction");
 
-            return "redirect:/transfer?currentUserId=" + currentUserId;
+            return "redirect:/transfer";
 
         } else {
             Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionFormDTO.getDescription(), transactionFormDTO.getTransactionAmount());
@@ -103,6 +110,6 @@ public class TransferViewController {
                             " / Commission amount : " + df.format(savedTransaction.getCommissionAmount()) + " €");
         }
 
-        return "redirect:/transfer?currentUserId=" + currentUserId;
+        return "redirect:/transfer";
     }
 }

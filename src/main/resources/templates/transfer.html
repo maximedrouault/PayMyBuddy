@@ -64,7 +64,7 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddConnection">Add Connection</button>
             </div>
         </div>
-        <form th:action="@{/transaction(currentUserId = ${currentUserId})}" th:object="${transactionFormDTO}" method="post">
+        <form th:action="@{/transaction}" th:object="${transactionFormDTO}" method="post">
             <div class="container bg-light py-5">
                 <div class="row justify-content-center gy-3 gx-md-5">
                     <div class="col-12 col-md-3">
@@ -141,7 +141,7 @@
     </section>
 
 <!--    Modal "Add connection"-->
-    <form th:action="@{/connection(currentUserId = ${currentUserId})}" th:object="${connectionForm}" method="post">
+    <form th:action="@{/connection}" th:object="${connectionForm}" method="post">
         <div class="modal fade" id="modalAddConnection" tabindex="-1" aria-labelledby="AddConnectionModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
