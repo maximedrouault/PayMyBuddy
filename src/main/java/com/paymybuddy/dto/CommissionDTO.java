@@ -3,6 +3,7 @@ package com.paymybuddy.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -13,5 +14,5 @@ public class CommissionDTO {
     private int transactionId;
     private LocalDate date;
     private LocalTime time;
-    private double commissionAmount;
+    private BigDecimal commissionAmount;
 }

@@ -1,7 +1,7 @@
 package com.paymybuddy.controller;
 
 
-import com.paymybuddy.dto.ConnectionForm;
+import com.paymybuddy.dto.ConnectionFormDTO;
 import com.paymybuddy.dto.TransactionFormDTO;
 import com.paymybuddy.model.Connection;
 import com.paymybuddy.model.Transaction;
@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.security.Principal;
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Controller
@@ -46,7 +46,7 @@ public class TransferViewController {
         model.addAttribute("transactions", transactions);
         model.addAttribute("connectableUsers", connectableUsers);
         model.addAttribute("transactionFormDTO", new TransactionFormDTO());
-        model.addAttribute("connectionFormDTO", new ConnectionForm());
+        model.addAttribute("connectionFormDTO", new ConnectionFormDTO());
         model.addAttribute("pages", new int[transactions.getTotalPages()]);
         model.addAttribute("currentPageNumber", currentPageNumber);
     }
@@ -59,7 +59,7 @@ public class TransferViewController {
 
     @PostMapping("/connection")
     public String addConnection(@NotNull Principal principal,
-                                @Valid @ModelAttribute ConnectionForm connectionForm,
+                                @Valid @ModelAttribute ConnectionFormDTO connectionFormDTO,
                                 BindingResult result, RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
@@ -67,7 +67,7 @@ public class TransferViewController {
         }
 
         User ownerUser = userService.getUserByEmail(principal.getName());
-        User receiverUser = userService.getUserById(connectionForm.getReceiverUserId());
+        User receiverUser = userService.getUserById(connectionFormDTO.getReceiverUserId());
 
         Connection addedConnection = connectionService.addConnection(ownerUser, receiverUser);
 
@@ -93,21 +93,22 @@ public class TransferViewController {
 
         User senderUser = userService.getUserByEmail(principal.getName());
         User receiverUser = userService.getUserById(transactionFormDTO.getReceiverUserId());
+        BigDecimal transactionAmount = transactionService.roundAmount(transactionFormDTO.getTransactionAmount());
+        BigDecimal commissionAmount = transactionService.getCommissionAmount(transactionAmount);
 
-        if (senderUser.getWallet().getBalance() < transactionFormDTO.getTransactionAmount()) {
+        if (senderUser.getWallet().getBalance().compareTo(transactionAmount.add(commissionAmount)) < 0) {
             redirectAttributes.addFlashAttribute("errorMessage", "The balance cannot be under 0. Please, add money to your wallet before transaction");
 
             return "redirect:/transfer";
 
         } else {
-            Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionFormDTO.getDescription(), transactionFormDTO.getTransactionAmount());
+            Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionFormDTO.getDescription(), transactionAmount, commissionAmount);
 
-            DecimalFormat df = new DecimalFormat("0.00");
             redirectAttributes.addFlashAttribute("successMessage",
                     "Transaction completed successfully  : Sender - " + savedTransaction.getSender().getName() +
                             " / Receiver - " + savedTransaction.getReceiver().getName() +
-                            " / Transaction Amount : " + df.format(savedTransaction.getTransactionAmount()) + " €" +
-                            " / Commission amount : " + df.format(savedTransaction.getCommissionAmount()) + " €");
+                            " / Transaction Amount : " + savedTransaction.getTransactionAmount() + " €" +
+                            " / Commission amount : " + savedTransaction.getCommissionAmount() + " €");
         }
 
         return "redirect:/transfer";

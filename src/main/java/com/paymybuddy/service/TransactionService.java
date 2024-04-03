@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -21,15 +23,7 @@ import java.util.List;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final WalletService walletService;
 
-
-//    public Page<Transaction> getTransactions(int senderUserId, int currentPageNumber) {
-//        Sort orderedTransactions = Sort.by(Sort.Order.desc("date"), Sort.Order.desc("time"));
-//        Pageable paginatedTransactions = PageRequest.of(currentPageNumber, 3, orderedTransactions);
-//
-//        return transactionRepository.findTransactionsBySender_UserId(senderUserId, paginatedTransactions);
-//    }
 
     public Page<Transaction> getTransactions(String senderUserEmail, int currentPageNumber) {
         Sort orderedTransactions = Sort.by(Sort.Order.desc("date"), Sort.Order.desc("time"));
@@ -38,10 +32,7 @@ public class TransactionService {
         return transactionRepository.findTransactionsBySender_Email(senderUserEmail, paginatedTransactions);
     }
 
-    public Transaction saveTransaction(User senderUser, User receiverUser, String description, double transactionAmount) {
-        double commissionFactor = 0.05; // 0.05 is the commission factor (5%)
-        double commissionAmount = Math.round((transactionAmount * commissionFactor) * 100.0) / 100.0; //  the result is rounded
-        transactionAmount = Math.round(transactionAmount * 100.0) / 100.0;
+    public Transaction saveTransaction(User senderUser, User receiverUser, String description, BigDecimal transactionAmount, BigDecimal commissionAmount) {
 
         Transaction transactionToSave = Transaction.builder()
                 .date(LocalDate.now())
@@ -53,8 +44,8 @@ public class TransactionService {
                 .commissionAmount(commissionAmount)
                 .build();
 
-        walletService.withdrawMoney(senderUser.getWallet(), transactionAmount + commissionAmount);
-        walletService.addMoney(receiverUser.getWallet(), transactionAmount);
+        senderUser.getWallet().withdrawMoney(transactionAmount.add(commissionAmount));
+        receiverUser.getWallet().addMoney(transactionAmount);
 
         return transactionRepository.save(transactionToSave);
     }
@@ -70,5 +61,16 @@ public class TransactionService {
                         .commissionAmount(transaction.getCommissionAmount())
                         .build())
                 .toList();
+    }
+
+    public BigDecimal getCommissionAmount(BigDecimal transactionAmount) {
+        BigDecimal commissionFactor = BigDecimal.valueOf(0.05); // 0.05 is the commission factor (5%)
+        BigDecimal commissionAmount = transactionAmount.multiply(commissionFactor);
+
+        return roundAmount(commissionAmount);
+    }
+
+    public BigDecimal roundAmount(BigDecimal amount) {
+        return amount.setScale(2, RoundingMode.HALF_UP);
     }
 }

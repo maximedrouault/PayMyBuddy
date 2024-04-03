@@ -1,16 +1,13 @@
 package com.paymybuddy.controller;
 
-import com.paymybuddy.service.ConnectionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class ConnectionController {
 
-    private final ConnectionService connectionService;
+//    private final ConnectionService connectionService;
 
 
 //    @GetMapping("/connections")
@@ -26,8 +23,8 @@ public class ConnectionController {
 //        return connectionService.addConnection(ownerUser, receiverUser);
 //    }
 
-    @DeleteMapping("/connection")
-    public Integer deleteConnection(@RequestParam int currentUserEmail, int receiverUserId) {
-        return connectionService.deleteConnection(currentUserEmail, receiverUserId);
-    }
+//    @DeleteMapping("/connection")
+//    public Integer deleteConnection(@RequestParam int currentUserEmail, int receiverUserId) {
+//        return connectionService.deleteConnection(currentUserEmail, receiverUserId);
+//    }
 }

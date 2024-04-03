@@ -5,7 +5,6 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.repository.ConnectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,10 +26,5 @@ public class ConnectionService {
                 .build();
 
         return connectionRepository.save(connectionToAdd);
-    }
-
-    @Transactional
-    public Integer deleteConnection(int ownerUserId, int receiverUserId) {
-        return connectionRepository.deleteConnectionByOwner_UserIdAndReceiver_UserId(ownerUserId, receiverUserId);
     }
 }

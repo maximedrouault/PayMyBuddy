@@ -35,7 +35,7 @@ public class User {
     @NotBlank
     private String name;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 100, nullable = false)
     @NotBlank
     private String bankAccountNumber;
 

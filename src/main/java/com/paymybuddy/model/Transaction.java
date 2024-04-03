@@ -1,10 +1,7 @@
 package com.paymybuddy.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -36,18 +34,20 @@ public class Transaction {
     @NotNull
     private LocalTime time;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     @NotBlank
     private String description;
 
-    @Column(nullable = false)
+    @Column(precision = 10, scale = 2, nullable = false)
     @NotNull
-    @DecimalMin("0.01")
-    private double transactionAmount;
+    @DecimalMin(value = "0.01")
+    @DecimalMax(value = "99999999.99")
+    private BigDecimal transactionAmount;
 
-    @Column(nullable = false)
-    @Min(0)
-    private double commissionAmount;
+    @Column(precision = 10, scale = 2, nullable = false)
+    @Min(value = 0)
+    @DecimalMax(value = "99999999.99")
+    private BigDecimal commissionAmount;
 
 
     @ManyToOne
