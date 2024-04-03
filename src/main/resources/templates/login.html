@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PayMyBuddy - Login</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <form class="container" method="post" th:action="@{/login}">
+        <div class="row justify-content-center align-items-center vh-100">
+            <div class="col-11 col-md-6 col-lg-5 col-xxl-4 p-4 border border-2 rounded-3">
+                <div class="row mb-5 mt-3 justify-content-center">
+                    <h1 class="col-8 col-md-6 btn btn-lg btn-success bg-gradient text-light" href="#">Pay My Buddy</h1>
+                </div>
+                <div class="row mb-5">
+                    <label for="username"></label>
+                    <input type="email" class="form-control fs-5" id="username" name="username" placeholder="Email" aria-describedby="email">
+                </div>
+                <div class="row mb-4">
+                    <label for="password"></label>
+                    <input type="password" class="form-control fs-5" id="password" name="password" placeholder="Password">
+                </div>
+                <div class="row">
+                    <div class="col text-center mb-3">
+                        <input type="checkbox" id="remember-me" name="remember-me">
+                        <label class="form-check-label fs-5" for="remember-me">Remember me</label>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-5 mb-3">
+                    <button type="submit" class="col-5 btn btn-primary fs-5">Login</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<!--    Bootstrap Script-->
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

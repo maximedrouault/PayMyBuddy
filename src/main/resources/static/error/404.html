@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page not found</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+<header class="container-fluid">
+    <!--        Navbar-->
+    <div class="row px-2">
+        <nav class="navbar navbar-expand-md navbar-light">
+            <a class="navbar-brand btn btn-lg btn-success bg-gradient text-light" href="#">Pay My Buddy</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav fw-semibold text-black">
+                    <li class="nav-item">
+                        <a class="nav-link active text-primary" href="/transfer">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/transfer">Transfer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" th:action="@{/logout}">
+                            <button class="nav-link" type="submit">Log off</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!--        Breadcrumb-->
+    <div class="row bg-light p-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb fw-semibold m-auto">
+                <li class="breadcrumb-item" aria-current="page"><a href="/transfer">Home</a></li>
+            </ol>
+        </nav>
+    </div>
+</header>
+
+<!--    Section "Send Money"-->
+<section class="container">
+    <h2 class="alert alert-danger text-center py-5 mt-5">Page not found</h2>
+</section>
+
+<!--    Bootstrap Script-->
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

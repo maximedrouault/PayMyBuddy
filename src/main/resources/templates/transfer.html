@@ -22,7 +22,7 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav fw-semibold text-black">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home</a>
+                            <a class="nav-link" href="/transfer">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active text-primary" href="#">Transfer</a>
@@ -47,7 +47,7 @@
         <div class="row bg-light p-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb fw-semibold m-auto">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/transfer">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Transfer</li>
                 </ol>
             </nav>
@@ -124,15 +124,15 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center mt-3">
                 <li class="page-item" th:unless="${currentPageNumber == 0}">
-                    <a th:href="@{/transfer(currentUserId = ${currentUserId}, currentPageNumber = ${currentPageNumber - 1})}" class="page-link" href="#" aria-label="Previous">
+                    <a th:href="@{/transfer(currentPageNumber = ${currentPageNumber - 1})}" class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li th:each="page, status : ${pages}" class="page-item">
-                    <a th:href="@{/transfer(currentUserId = ${currentUserId}, currentPageNumber = ${status.index})}" th:text="${status.index + 1}" class="page-link" href="#"></a>
+                <li th:each="page, status : ${pages}" th:unless="${pages.length == 1}" class="page-item">
+                    <a th:href="@{/transfer(currentPageNumber = ${status.index})}" th:text="${status.index + 1}" class="page-link" href="#"></a>
                 </li>
                 <li class="page-item" th:unless="${currentPageNumber == pages.length - 1}">
-                    <a th:href="@{/transfer(currentUserId = ${currentUserId}, currentPageNumber = ${currentPageNumber + 1})}" class="page-link" href="#" aria-label="Next">
+                    <a th:href="@{/transfer(currentPageNumber = ${currentPageNumber + 1})}" class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

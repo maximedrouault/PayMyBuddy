@@ -14,12 +14,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
+        httpSecurity
                 .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
                         .defaultSuccessUrl("/transfer", true)
                         .permitAll())
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .build();
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/webjars/**").permitAll()
+                        .anyRequest().authenticated())
+                .rememberMe(rememberMe -> rememberMe
+                        .tokenValiditySeconds(86400)
+                        .rememberMeParameter("remember-me"));
+
+        return httpSecurity.build();
     }
 
     @Bean
