@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PayMyBuddy - Transfer</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header class="container-fluid">
+<!--        Navbar-->
+        <div class="row px-2">
+            <nav class="navbar navbar-expand-md navbar-light">
+                <a class="navbar-brand btn btn-lg btn-success bg-gradient text-light" href="#">Pay My Buddy</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav fw-semibold text-black">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/transfer">Transfer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active text-primary" href="/profile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" th:action="@{/logout}">
+                                <button class="nav-link" type="submit">Log off</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+<!--        Breadcrumb-->
+        <div class="row bg-light p-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb fw-semibold m-auto">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                </ol>
+            </nav>
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="row mt-3">
+            <div class="col text-center">
+                <h2 class="text-decoration-underline">Bank account number :</h2>
+                <p th:text="${currentUser.bankAccountNumber}"></p>
+                <h2 class="text-decoration-underline">Actual balance :</h2>
+                <p class="fw-semibold" th:text="${currentUser.wallet.balance} + ' €'"></p>
+            </div>
+        </div>
+        <div class="row text-center border border-2 rounded-2 m-1 py-2 justify-content-center column-gap-md-5 py-md-5">
+            <h2 class="text-decoration-underline mt-1 mb-4 mb-xl-5">Wallet management :</h2>
+            <div class="row justify-content-evenly pb-xl-4">
+                <div class="col-12 col-md-5 col-xl-4 border border-1 rounded-2 py-3 p-xl-5">
+                    <h3 class="fs-5 mb-3">Add money from bank account to wallet :</h3>
+                    <form th:action="@{/profile/add}" method="post" th:object="${walletAddFormDTO}">
+                        <input type="number" th:field="*{amountToAdd}" class="form-control text-end border border-black border-2 rounded-0" step="0.01" placeholder="0€" aria-label="amountToAdd">
+                        <p th:if="${#fields.hasErrors('amountToAdd')}" th:errors="*{amountToAdd}" class="alert alert-danger mt-3"></p>
+                        <p th:if="${errorAddMessage != null}" class="alert alert-danger text-center mt-3" th:text="${errorAddMessage}"></p>
+                        <p th:if="${successAddMessage != null}" class="alert alert-success text-center mt-3" th:text="${successAddMessage}"></p>
+                        <button type="submit" class="btn btn-success mt-4">Add money</button>
+                    </form>
+                </div>
+                <div class="col-12 col-md-5 col-xl-4 border border-1 rounded-2 py-3 p-xl-5 mt-3 mt-md-0">
+                    <h3 class="fs-5 mb-3">Withdraw money from wallet to bank account :</h3>
+                    <form th:action="@{/profile/withdraw}" method="post" th:object="${walletWithdrawDTO}">
+                        <input type="number" th:field="*{amountToWithdraw}" class="form-control text-end border border-black border-2 rounded-0" step="0.01" placeholder="0€" aria-label="amountToWithdraw">
+                        <p th:if="${#fields.hasErrors('amountToWithdraw')}" th:errors="*{amountToWithdraw}" class="alert alert-danger mt-3"></p>
+                        <p th:if="${errorWithdrawMessage != null}" class="alert alert-danger text-center mt-3" th:text="${errorWithdrawMessage}"></p>
+                        <p th:if="${successWithdrawMessage != null}" class="alert alert-success text-center mt-3" th:text="${successWithdrawMessage}"></p>
+                        <button type="submit" class="btn btn-success mt-4">Withdraw money</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!--    Bootstrap Script-->
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

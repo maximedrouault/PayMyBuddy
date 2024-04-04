@@ -24,6 +24,8 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
 
+    private final BigDecimal COMMISSION_FACTOR = new BigDecimal("0.05"); // 0.05 is the commission factor (5%)
+
 
     public Page<Transaction> getTransactions(String senderUserEmail, int currentPageNumber) {
         Sort orderedTransactions = Sort.by(Sort.Order.desc("date"), Sort.Order.desc("time"));
@@ -64,8 +66,7 @@ public class TransactionService {
     }
 
     public BigDecimal getCommissionAmount(BigDecimal transactionAmount) {
-        BigDecimal commissionFactor = BigDecimal.valueOf(0.05); // 0.05 is the commission factor (5%)
-        BigDecimal commissionAmount = transactionAmount.multiply(commissionFactor);
+        BigDecimal commissionAmount = transactionAmount.multiply(COMMISSION_FACTOR);
 
         return roundAmount(commissionAmount);
     }
