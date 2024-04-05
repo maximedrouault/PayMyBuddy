@@ -57,8 +57,6 @@ public class ProfileViewController {
         if (newBalance.compareTo(MAX_BALANCE) > 0) {
             redirectAttributes.addFlashAttribute("errorAddMessage", "The balance cannot be greater than 99999999,99. Please, enter a lower amount");
 
-            return "redirect:/profile";
-
         } else {
             currentUser.getWallet().setBalance(newBalance);
             userService.saveUser(currentUser);
@@ -83,8 +81,6 @@ public class ProfileViewController {
 
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
             redirectAttributes.addFlashAttribute("errorWithdrawMessage", "The balance cannot be under 0. Please, enter an upper amount");
-
-            return "redirect:/profile";
 
         } else {
             currentUser.getWallet().setBalance(newBalance);

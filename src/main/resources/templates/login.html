@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <form class="container" method="post" th:action="@{/login}">
+    <form class="container" th:action="@{/login}" method="post">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="col-11 col-md-6 col-lg-5 col-xxl-4 p-4 border border-2 rounded-3">
                 <div class="row mb-5 mt-3 justify-content-center">
@@ -18,11 +18,11 @@
                 </div>
                 <div class="row mb-5">
                     <label for="username"></label>
-                    <input type="email" class="form-control fs-5" id="username" name="username" placeholder="Email" aria-describedby="email">
+                    <input type="email" class="form-control fs-5" id="username" name="username" placeholder="Email" required aria-describedby="email">
                 </div>
                 <div class="row mb-4">
                     <label for="password"></label>
-                    <input type="password" class="form-control fs-5" id="password" name="password" placeholder="Password">
+                    <input type="password" class="form-control fs-5" id="password" name="password" required placeholder="Password">
                 </div>
                 <div class="row">
                     <div class="col text-center mb-3">
@@ -32,6 +32,8 @@
                 </div>
                 <div class="row justify-content-center mt-5 mb-3">
                     <button type="submit" class="col-5 btn btn-primary fs-5">Login</button>
+                    <p th:if="${param.error}" class="alert alert-danger text-center mt-5">Invalid username and password</p>
+                    <p th:if="${param.logout}" class="alert alert-success text-center mt-5">Logout successful</p>
                 </div>
             </div>
         </div>

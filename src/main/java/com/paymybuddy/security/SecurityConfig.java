@@ -19,6 +19,8 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .defaultSuccessUrl("/transfer", true)
                         .permitAll())
+                .logout(logout -> logout.logoutSuccessUrl("/login?logout")
+                        .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/webjars/**").permitAll()
                         .anyRequest().authenticated())
