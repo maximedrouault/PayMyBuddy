@@ -18,13 +18,13 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static com.paymybuddy.constant.Constant.COMMISSION_FACTOR;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
-
-    private final BigDecimal COMMISSION_FACTOR = new BigDecimal("0.05"); // 0.05 is the commission factor (5%)
 
 
     public Page<Transaction> getTransactions(String senderUserEmail, int currentPageNumber) {

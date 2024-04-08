@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .logout(logout -> logout.logoutSuccessUrl("/login?logout")
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/webjars/**").permitAll()
+                        .requestMatchers("/webjars/bootstrap/**").permitAll()
                         .anyRequest().authenticated())
                 .rememberMe(rememberMe -> rememberMe
                         .tokenValiditySeconds(86400)

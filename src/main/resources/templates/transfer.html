@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PayMyBuddy - Transfer</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -114,7 +113,7 @@
                     <tr th:each="transaction : ${transactions}">
                         <td th:text="${transaction.receiver.name}" class="text-center py-5"></td>
                         <td th:text="${transaction.description}" class="text-center py-5"></td>
-                        <td th:text="${#numbers.formatCurrency(transaction.transactionAmount)}" class="text-center py-5"></td>
+                        <td th:text="${transaction.transactionAmount} + ' €'" class="text-center py-5"></td>
                     </tr>
                 </tbody>
             </table>

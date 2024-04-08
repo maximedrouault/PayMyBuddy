@@ -18,13 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.security.Principal;
 
+import static com.paymybuddy.constant.Constant.MAX_BALANCE;
+
 @Controller
 @RequiredArgsConstructor
 public class ProfileViewController {
 
     private final UserService userService;
-
-    private final BigDecimal MAX_BALANCE = new BigDecimal("99999999.99");
 
 
     @ModelAttribute
@@ -35,6 +35,7 @@ public class ProfileViewController {
         model.addAttribute("walletAddFormDTO", new WalletAddFormDTO());
         model.addAttribute("walletWithdrawDTO", new WalletWithdrawDTO());
     }
+
 
     @GetMapping("/profile")
     public String profileView() {
@@ -55,7 +56,7 @@ public class ProfileViewController {
         BigDecimal newBalance = currentUser.getWallet().getBalance().add(amountToAdd);
 
         if (newBalance.compareTo(MAX_BALANCE) > 0) {
-            redirectAttributes.addFlashAttribute("errorAddMessage", "The balance cannot be greater than 99999999,99. Please, enter a lower amount");
+            redirectAttributes.addFlashAttribute("errorAddMessage", "The balance cannot be greater than " + MAX_BALANCE + ". Please, enter a lower amount");
 
         } else {
             currentUser.getWallet().setBalance(newBalance);

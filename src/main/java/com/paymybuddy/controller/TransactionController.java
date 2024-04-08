@@ -14,18 +14,6 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-//    @GetMapping("/transactions")
-//    public Page<Transaction> getTransactions(@RequestParam int senderUserId, @RequestParam int currentPageNumber) {
-//        return transactionService.getTransactions(senderUserId, currentPageNumber);
-//    }
-
-//    @PostMapping("/transaction")
-//    public Transaction saveTransaction(@RequestParam int senderUserId, int receiverUserId, String description, double transactionAmount) {
-//        User senderUser = userService.getUserById(senderUserId);
-//        User receiverUser = userService.getUserById(receiverUserId);
-//
-//        return transactionService.saveTransaction(senderUser, receiverUser, description, transactionAmount);
-//    }
 
     @GetMapping("/commissions")
     public List<CommissionDTO> getCommissions() {

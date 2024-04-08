@@ -8,6 +8,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
 
+import static com.paymybuddy.constant.Constant.MAX_AMOUNT;
+
 @Entity
 @Data
 @DynamicUpdate
@@ -19,7 +21,7 @@ public class Wallet {
 
     @Column(precision = 10, scale = 2, nullable = false)
     @Min(value = 0)
-    @DecimalMax(value = "99999999.99")
+    @DecimalMax(value = MAX_AMOUNT)
     private BigDecimal balance;
 
 

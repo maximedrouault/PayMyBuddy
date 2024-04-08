@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -33,9 +33,7 @@
                         <a class="nav-link" href="#">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <form method="post" th:action="@{/logout}">
-                            <button class="nav-link" type="submit">Log off</button>
-                        </form>
+                        <button class="nav-link" type="submit">Log off</button>
                     </li>
                 </ul>
             </div>
@@ -54,7 +52,7 @@
 
 <!--    Section "Send Money"-->
 <section class="container">
-    <h2 class="alert alert-danger text-center py-5 mt-5">Page not found</h2>
+    <h2 class="alert alert-danger text-center py-5 mt-5">Unauthorized request</h2>
 </section>
 
 <!--    Bootstrap Script-->

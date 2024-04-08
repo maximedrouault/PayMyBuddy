@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static com.paymybuddy.constant.Constant.MAX_AMOUNT;
+import static com.paymybuddy.constant.Constant.MIN_AMOUNT;
+
 @Entity
 @Data
 @Builder
@@ -40,13 +43,13 @@ public class Transaction {
 
     @Column(precision = 10, scale = 2, nullable = false)
     @NotNull
-    @DecimalMin(value = "0.01")
-    @DecimalMax(value = "99999999.99")
+    @DecimalMin(value = MIN_AMOUNT)
+    @DecimalMax(value = MAX_AMOUNT)
     private BigDecimal transactionAmount;
 
     @Column(precision = 10, scale = 2, nullable = false)
     @Min(value = 0)
-    @DecimalMax(value = "99999999.99")
+    @DecimalMax(value = MAX_AMOUNT)
     private BigDecimal commissionAmount;
 
 
