@@ -31,6 +31,10 @@ public class User {
     @NotBlank
     private String password;
 
+    @Column(length = 5, nullable = false)
+    @NotBlank
+    private String role;
+
     @Column(length = 50, nullable = false)
     @NotBlank
     private String name;

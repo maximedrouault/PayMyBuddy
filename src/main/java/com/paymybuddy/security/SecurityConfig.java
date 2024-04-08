@@ -15,15 +15,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/webjars/bootstrap/**").permitAll()
+                        .requestMatchers("/commissions").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .defaultSuccessUrl("/transfer", true)
                         .permitAll())
-                .logout(logout -> logout.logoutSuccessUrl("/login?logout")
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
                         .permitAll())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/webjars/bootstrap/**").permitAll()
-                        .anyRequest().authenticated())
                 .rememberMe(rememberMe -> rememberMe
                         .tokenValiditySeconds(86400)
                         .rememberMeParameter("remember-me"));
