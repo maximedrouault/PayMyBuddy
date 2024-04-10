@@ -60,7 +60,7 @@ public class ProfileViewController {
 
         } else {
             currentUser.getWallet().setBalance(newBalance);
-            userService.saveUser(currentUser);
+            userService.updateUser(currentUser);
             redirectAttributes.addFlashAttribute("successAddMessage", "The balance successfully updated");
         }
 
@@ -85,7 +85,7 @@ public class ProfileViewController {
 
         } else {
             currentUser.getWallet().setBalance(newBalance);
-            userService.saveUser(currentUser);
+            userService.updateUser(currentUser);
             redirectAttributes.addFlashAttribute("successWithdrawMessage", "The balance has been updated and the money sent to your bank account successfully");
         }
 

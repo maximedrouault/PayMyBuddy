@@ -2,6 +2,7 @@ package com.paymybuddy.service;
 
 import com.paymybuddy.model.Connection;
 import com.paymybuddy.model.User;
+import com.paymybuddy.repository.ConnectionRepository;
 import com.paymybuddy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,8 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ConnectionService connectionService;
+    private final ConnectionRepository connectionRepository;
+
 
     public User getUserByEmail(String userEmail) {
         return userRepository.findUserByEmail(userEmail);
@@ -23,19 +25,15 @@ public class UserService {
         return userRepository.findUserByUserId(userId);
     }
 
-    public User saveUser(User userToAdd) {
-        return userRepository.save(userToAdd);
+    public User updateUser(User userToUpdate) {
+        return userRepository.save(userToUpdate);
     }
-
 
     public List<User> getConnectableUsers(String currentUserEmail) {
         List<User> connectableUsers = userRepository.findUsersByEmailIsNot(currentUserEmail);
-        List<User> connectedUsers = connectionService.getConnections(currentUserEmail)
-                .stream()
-                .map(Connection::getReceiver)
-                .toList();
+        List<Connection> connectionsOfCurrentUser = connectionRepository.findConnectionsByOwner_Email(currentUserEmail);
 
-        connectableUsers.removeAll(connectedUsers);
+        connectableUsers.removeAll(connectionsOfCurrentUser.stream().map(Connection::getReceiver).toList());
 
         return connectableUsers;
     }

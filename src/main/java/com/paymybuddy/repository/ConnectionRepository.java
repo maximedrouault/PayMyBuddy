@@ -10,6 +10,4 @@ import java.util.List;
 public interface ConnectionRepository extends CrudRepository<Connection, Integer> {
 
     List<Connection> findConnectionsByOwner_Email(String ownerUserEmail);
-
-    Integer deleteConnectionByOwner_UserIdAndReceiver_UserId(int ownerUserId, int receiverUserId);
 }
