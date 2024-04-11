@@ -196,4 +196,42 @@ public class TransactionServiceTest {
 
         assertEquals(expectedCommission, actualCommission);
     }
+
+
+    // roundAmount
+    @Test
+    void roundAmount_WhenAmountHasMoreThanTwoDecimalPlaces_ShouldRoundToTwoDecimalPlaces() {
+        BigDecimal amount = BigDecimal.valueOf(100.1234);
+
+        BigDecimal roundedAmount = transactionService.roundAmount(amount);
+
+        assertEquals(BigDecimal.valueOf(100.12), roundedAmount);
+    }
+
+    @Test
+    void roundAmount_WhenAmountHasLessThanTwoDecimalPlaces_ShouldReturnSameAmount() {
+        BigDecimal amount = BigDecimal.valueOf(100.1);
+
+        BigDecimal roundedAmount = transactionService.roundAmount(amount);
+
+        assertEquals(BigDecimal.valueOf(100.10).setScale(2,RoundingMode.HALF_UP), roundedAmount);
+    }
+
+    @Test
+    void roundAmount_WhenAmountHasExactlyTwoDecimalPlaces_ShouldReturnSameAmount() {
+        BigDecimal amount = BigDecimal.valueOf(100.12);
+
+        BigDecimal roundedAmount = transactionService.roundAmount(amount);
+
+        assertEquals(BigDecimal.valueOf(100.12), roundedAmount);
+    }
+
+    @Test
+    void roundAmount_WhenAmountIsZero_ShouldReturnZero() {
+        BigDecimal amount = BigDecimal.ZERO;
+
+        BigDecimal roundedAmount = transactionService.roundAmount(amount);
+
+        assertEquals(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP), roundedAmount);
+    }
 }
