@@ -145,6 +145,7 @@ public class UserServiceTest {
         when(userRepository.findUsersByEmailIsNot(currentUserEmail)).thenReturn(otherUsers);
         when(connectionRepository.findConnectionsByOwner_Email(currentUserEmail)).thenReturn(connectionsOfCurrentUser);
 
+        // Connectable are all other users, User2 and User3
         List<User> connectableUsers = userService.getConnectableUsers(currentUserEmail);
 
         assertEquals(2, connectableUsers.size());

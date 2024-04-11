@@ -102,13 +102,13 @@ public class TransferViewController {
             return "redirect:/transfer";
 
         } else {
-            Transaction savedTransaction = transactionService.saveTransaction(senderUser, receiverUser, transactionFormDTO.getDescription(), transactionAmount, commissionAmount);
+            Transaction addedTransaction = transactionService.addTransaction(senderUser, receiverUser, transactionFormDTO.getDescription(), transactionAmount, commissionAmount);
 
             redirectAttributes.addFlashAttribute("successMessage",
-                    "Transaction completed successfully  : Sender - " + savedTransaction.getSender().getName() +
-                            " / Receiver - " + savedTransaction.getReceiver().getName() +
-                            " / Transaction Amount : " + savedTransaction.getTransactionAmount() + " €" +
-                            " / Commission amount : " + savedTransaction.getCommissionAmount() + " €");
+                    "Transaction added successfully  : Sender - " + addedTransaction.getSender().getName() +
+                            " / Receiver - " + addedTransaction.getReceiver().getName() +
+                            " / Transaction Amount : " + addedTransaction.getTransactionAmount() + " €" +
+                            " / Commission amount : " + addedTransaction.getCommissionAmount() + " €");
         }
 
         return "redirect:/transfer";

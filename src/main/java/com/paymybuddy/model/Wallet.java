@@ -3,7 +3,10 @@ package com.paymybuddy.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.math.BigDecimal;
@@ -12,6 +15,9 @@ import static com.paymybuddy.constant.Constant.MAX_AMOUNT;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @DynamicUpdate
 public class Wallet {
 

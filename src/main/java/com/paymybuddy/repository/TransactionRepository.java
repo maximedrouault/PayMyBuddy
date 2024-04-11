@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends CrudRepository<Transaction, Integer> {
 
-    Page<Transaction> findTransactionsBySender_Email(String senderUserEmail, Pageable pageable);
+    Page<Transaction> findTransactionsBySender_EmailOrderByDateDescTimeDesc(String senderUserEmail, Pageable pageable);
 }

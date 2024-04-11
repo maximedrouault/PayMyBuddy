@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,13 +27,12 @@ public class TransactionService {
 
 
     public Page<Transaction> getTransactions(String senderUserEmail, int currentPageNumber) {
-        Sort orderedTransactions = Sort.by(Sort.Order.desc("date"), Sort.Order.desc("time"));
-        Pageable paginatedTransactions = PageRequest.of(currentPageNumber, 3, orderedTransactions);
+        Pageable pageRequest = PageRequest.of(currentPageNumber, 3);
 
-        return transactionRepository.findTransactionsBySender_Email(senderUserEmail, paginatedTransactions);
+        return transactionRepository.findTransactionsBySender_EmailOrderByDateDescTimeDesc(senderUserEmail, pageRequest);
     }
 
-    public Transaction saveTransaction(User senderUser, User receiverUser, String description, BigDecimal transactionAmount, BigDecimal commissionAmount) {
+    public Transaction addTransaction(User senderUser, User receiverUser, String description, BigDecimal transactionAmount, BigDecimal commissionAmount) {
 
         Transaction transactionToSave = Transaction.builder()
                 .date(LocalDate.now())
