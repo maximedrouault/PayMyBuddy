@@ -15,7 +15,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,7 +30,7 @@ public class LoginViewControllerIT {
     // loginView
     @Test
     void loginView_WhenAccessingLogin_ShouldReturnLoginPage() throws Exception {
-        mockMvc.perform(get("/login")).andDo(print()).andExpect(status().isOk());
+        mockMvc.perform(get("/login")).andExpect(status().isOk());
     }
 
     @Test
@@ -55,14 +54,48 @@ public class LoginViewControllerIT {
     @Test
     @WithMockUser
     void loginView_WhenAlreadyAuthenticatedUserAccessesTransfer_ShouldReturnTransferPage() throws Exception {
-        mockMvc.perform(get("/transfer")).andDo(print()).andExpect(status().isOk());
+        mockMvc.perform(get("/transfer")).andExpect(status().isOk());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/transfer", "/unknownurl"})
+    @ValueSource(strings = {"/transfer", "/unknownurl", "/commissions"})
     void loginView_WhenUnauthenticatedUserAccessesUnknownOrUnauthorizedUrl_ShouldReturnLoginPage(String urlRequest) throws Exception {
-        mockMvc.perform(get(urlRequest)).andDo(print())
+        mockMvc.perform(get(urlRequest))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    void loginView_WhenCorrectCredentialsProvidedForUser_ShouldAuthenticateUserWithUserRole() throws Exception {
+        mockMvc.perform(formLogin("/login").user("user1test@example.com").password("1234"))
+                .andExpect(authenticated().withRoles("USER"));
+    }
+
+    @Test
+    void loginView_WhenCorrectCredentialsProvidedForAdmin_ShouldAuthenticateUserWithAdminRole() throws Exception {
+        mockMvc.perform(formLogin("/login").user("admintest@example.com").password("1234"))
+                .andExpect(authenticated().withRoles("ADMIN"));
+    }
+
+    // Test if secure endpoint isn't accessible for not allowed user, based on role
+    @Test
+    @WithMockUser(username = "user1test@example.com") // With roles = {"USER"}
+    void loginView_WhenUserWithRoleUser_ShouldNotHaveAccessToCommission() throws Exception {
+        mockMvc.perform(get("/commissions"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "admintest@example.com", roles = "ADMIN")
+    void loginView_WhenUserWithRoleAdmin_ShouldHaveAccessToCommission() throws Exception {
+        mockMvc.perform(get("/commissions"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "otherrole@example.com", roles = "OTHERROLE")
+    void getCommissions_WhenAuthenticatedUserWithOtherRole_ShouldReturnForbidden() throws Exception {
+        mockMvc.perform(get("/commissions"))
+                .andExpect(status().isForbidden());
     }
 }
