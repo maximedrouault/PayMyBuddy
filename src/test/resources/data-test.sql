@@ -7,13 +7,13 @@ VALUES  (1, 1200.00),
         (6, 2000.00);
 
 
-INSERT INTO user (email, password, role, name, bank_account_number, wallet_id)
-VALUES  ('user1@example.com', '$2a$12$b2dB2W39ThUNSK3DBrRoTe9mJMkopItV4SuUqxK37fYfR9HWlZeO2', 'USER', 'User One', 'FR12345678901234567890123456', 1),
-        ('user2@example.com', '$2a$12$tDbK9W9lCz6AWqYfuqF/J.9746URT29DIDYWanh88QcLH0yZDbRtW', 'USER', 'User Two', 'FR22345678901234567890123456', 2),
-        ('user3@example.com', '$2a$12$B0mbnwYnAXoZkluOO3g3uuphi1Ardbqh.tEbfLnGA4AnsddeDoGv6', 'USER', 'User Three', 'FR32345678901234567890123456', 3),
-        ('user4@example.com', '$2a$12$JRgrr20kht5htfGJnMbD2uKU3WSE8X.MAX/IHL/Cu7g8mV3LsiAfm', 'USER', 'User Four', 'FR42345678901234567890123456', 4),
-        ('user5@example.com', '$2a$12$Z2V3QmSzgr3GpnGgaJzaEuOdHKN13ios.uQ1GtxlewoftyNQ0AFk2', 'USER', 'User Five', 'FR52345678901234567890123456', 5),
-        ('admin@example.com', '$2a$12$SA3dtLjDd9.9tmpW2Ml0JOyCzphhISiPujgJ76h3j6WEr3fPFA3Eu', 'ADMIN', 'Admin One', 'FR52345678901234567890123457', 6);
+INSERT INTO "user" (email, password, role, name, bank_account_number, wallet_id)
+VALUES  ('user1test@example.com', '$2a$12$b2dB2W39ThUNSK3DBrRoTe9mJMkopItV4SuUqxK37fYfR9HWlZeO2', 'USER', 'User One Test', 'FR12345678901234567890123456', 1),
+        ('user2test@example.com', '$2a$12$tDbK9W9lCz6AWqYfuqF/J.9746URT29DIDYWanh88QcLH0yZDbRtW', 'USER', 'User Two Test', 'FR22345678901234567890123456', 2),
+        ('user3test@example.com', '$2a$12$B0mbnwYnAXoZkluOO3g3uuphi1Ardbqh.tEbfLnGA4AnsddeDoGv6', 'USER', 'User Three Test', 'FR32345678901234567890123456', 3),
+        ('user4test@example.com', '$2a$12$JRgrr20kht5htfGJnMbD2uKU3WSE8X.MAX/IHL/Cu7g8mV3LsiAfm', 'USER', 'User Four Test', 'FR42345678901234567890123456', 4),
+        ('user5test@example.com', '$2a$12$Z2V3QmSzgr3GpnGgaJzaEuOdHKN13ios.uQ1GtxlewoftyNQ0AFk2', 'USER', 'User Five Test', 'FR52345678901234567890123456', 5),
+        ('admintest@example.com', '$2a$12$SA3dtLjDd9.9tmpW2Ml0JOyCzphhISiPujgJ76h3j6WEr3fPFA3Eu', 'ADMIN', 'Admin One Test', 'FR52345678901234567890123457', 6);
 
 
 INSERT INTO transaction (transaction_amount, commission_amount, date, time, description, sender_user_id, receiver_user_id)

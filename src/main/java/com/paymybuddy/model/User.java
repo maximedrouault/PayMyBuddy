@@ -16,6 +16,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
+@Table(name = "`user`")
 public class User {
 
     @Id
