@@ -21,6 +21,29 @@ public class TransactionControllerIT {
     private MockMvc mockMvc;
 
 
+    // Test if secure endpoint isn't accessible for not allowed user, based on role
+    @Test
+    @WithMockUser(username = "user1test@example.com") // With roles = {"USER"}
+    void getCommissions_WhenUserWithRoleUser_ShouldNotHaveAccessToCommission() throws Exception {
+        mockMvc.perform(get("/commissions"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "admintest@example.com", roles = "ADMIN")
+    void getCommissions_WhenUserWithRoleAdmin_ShouldHaveAccessToCommission() throws Exception {
+        mockMvc.perform(get("/commissions"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "otherrole@example.com", roles = "OTHERROLE")
+    void getCommissions_WhenAuthenticatedUserWithOtherRole_ShouldReturnForbidden() throws Exception {
+        mockMvc.perform(get("/commissions"))
+                .andExpect(status().isForbidden());
+    }
+
+
     // getCommissions
     @Test
     @WithMockUser(username = "admintest@example.com", roles = "ADMIN")
