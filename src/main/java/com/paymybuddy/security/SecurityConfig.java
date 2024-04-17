@@ -17,6 +17,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/webjars/bootstrap/**").permitAll()
+                        .requestMatchers("/webjars/bootstrap-icons/**").permitAll()
                         .requestMatchers("/commissions").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin

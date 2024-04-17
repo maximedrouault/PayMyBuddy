@@ -11,10 +11,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -89,5 +92,20 @@ public class LoginViewControllerIT {
     void loginView_WhenCorrectCredentialsProvidedForAdmin_ShouldAuthenticateUserWithAdminRole() throws Exception {
         mockMvc.perform(formLogin("/login").user("admintest@example.com").password("1234"))
                 .andExpect(authenticated().withRoles("ADMIN"));
+    }
+
+
+    // logout
+    @Test
+    @WithMockUser(username = "user1test@example.com")
+    void logout_WhenAuthenticatedUserLogout_ShouldRedirectToLoginViewWithSuccessMessage() throws Exception {
+        mockMvc.perform(post("/logout")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?logout"))
+                .andReturn();
+
+        mockMvc.perform(get("/login?logout"))
+                .andExpect(content().string(containsString("Logout successful")));
     }
 }

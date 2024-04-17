@@ -1,7 +1,7 @@
 package com.paymybuddy.controller;
 
 import com.paymybuddy.dto.WalletAddFormDTO;
-import com.paymybuddy.dto.WalletWithdrawDTO;
+import com.paymybuddy.dto.WalletWithdrawFormDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class ProfileViewController {
 
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("walletAddFormDTO", new WalletAddFormDTO());
-        model.addAttribute("walletWithdrawDTO", new WalletWithdrawDTO());
+        model.addAttribute("walletWithdrawFormDTO", new WalletWithdrawFormDTO());
     }
 
 
@@ -68,7 +68,7 @@ public class ProfileViewController {
     }
 
     @PostMapping("/profile/withdraw")
-    public String withdrawMoneyFromWallet(@Valid @ModelAttribute WalletWithdrawDTO walletWithdrawDTO,
+    public String withdrawMoneyFromWallet(@Valid @ModelAttribute WalletWithdrawFormDTO walletWithdrawFormDTO,
                                           @NotNull Principal principal, BindingResult result,
                                           RedirectAttributes redirectAttributes) {
 
@@ -77,7 +77,7 @@ public class ProfileViewController {
         }
 
         User currentUser = userService.getUserByEmail(principal.getName());
-        BigDecimal amountToWithdraw = walletWithdrawDTO.getAmountToWithdraw();
+        BigDecimal amountToWithdraw = walletWithdrawFormDTO.getAmountToWithdraw();
         BigDecimal newBalance = currentUser.getWallet().getBalance().subtract(amountToWithdraw);
 
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {

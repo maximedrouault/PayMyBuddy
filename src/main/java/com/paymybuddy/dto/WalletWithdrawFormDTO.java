@@ -12,7 +12,7 @@ import static com.paymybuddy.constant.Constant.MAX_AMOUNT;
 import static com.paymybuddy.constant.Constant.MIN_AMOUNT;
 
 @Data
-public class WalletWithdrawDTO {
+public class WalletWithdrawFormDTO {
 
     @DecimalMin(value = MIN_AMOUNT, message = "The amount must be superior or equal at " + MIN_AMOUNT)
     @DecimalMax(value = MAX_AMOUNT, message = "The amount cannot be greater than " + MAX_AMOUNT)

@@ -193,7 +193,7 @@ public class TransferViewControllerIT {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"-20.00", "0", "100000000.00"})
+    @ValueSource(strings = {"-20.00", "0", "100000000.00", "100.0123"})
     @NullAndEmptySource
     @WithMockUser(username = "user1test@example.com")
     void addTransaction_WhenWrongTransactionAmount_ShouldRedirectToTransferViewWithErrorMessage(String transactionAmount) throws Exception {
@@ -213,7 +213,7 @@ public class TransferViewControllerIT {
         mockMvc.perform(post("/transaction")
                         .param("receiverUserId", "2")
                         .param("description", "Test transaction")
-                        .param("transactionAmount", "1500") // wallet balance of user is 1200 in this test
+                        .param("transactionAmount", "1500") // Wallet balance is 1200.00 in the test data
                         .with(csrf()))
                 .andExpect(flash().attributeExists("errorMessage"))
                 .andExpect(status().is3xxRedirection())

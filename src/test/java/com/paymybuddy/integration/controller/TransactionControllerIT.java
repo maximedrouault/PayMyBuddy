@@ -9,8 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -20,6 +19,13 @@ public class TransactionControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
+
+    @Test
+    void getCommissions_WhenUnauthenticatedUser_ShouldReturnLoginView() throws Exception {
+        mockMvc.perform(get("/commissions"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
 
     // Test if secure endpoint isn't accessible for not allowed user, based on role
     @Test
