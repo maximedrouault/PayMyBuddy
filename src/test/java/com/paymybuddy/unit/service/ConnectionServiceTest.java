@@ -36,19 +36,19 @@ class ConnectionServiceTest {
         Connection connection2 = Connection.builder().build();
         List<Connection> expectedConnections = List.of(connection1, connection2);
 
-        when(connectionRepository.findConnectionsByOwner_Email(ownerEmail)).thenReturn(expectedConnections);
+        when(connectionRepository.findConnectionsByOwner_EmailAndOwner_Role(ownerEmail, "USER")).thenReturn(expectedConnections);
 
         List<Connection> foundConnections = connectionService.getConnections(ownerEmail);
 
         assertEquals(expectedConnections, foundConnections);
-        verify(connectionRepository, times(1)).findConnectionsByOwner_Email(ownerEmail);
+        verify(connectionRepository, times(1)).findConnectionsByOwner_EmailAndOwner_Role(ownerEmail, "USER");
     }
 
     @ParameterizedTest
     @ValueSource(strings = "nonexistent@example.com")
     @NullAndEmptySource
     void getConnections_WhenNoConnectionsExistOrOwnerEmailIsNull_ShouldReturnEmptyList(String ownerEmail) {
-        when(connectionRepository.findConnectionsByOwner_Email(ownerEmail)).thenReturn(List.of());
+        when(connectionRepository.findConnectionsByOwner_EmailAndOwner_Role(ownerEmail, "USER")).thenReturn(List.of());
 
         List<Connection> foundConnections = connectionService.getConnections(ownerEmail);
 

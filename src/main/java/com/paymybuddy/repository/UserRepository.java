@@ -13,5 +13,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     User findUserByUserId(int userId);
 
-    List<User> findUsersByEmailIsNot(String userEmail);
+    List<User> findUsersByEmailIsNotAndRole(String userEmail, String role);
 }

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ConnectionRepository extends CrudRepository<Connection, Integer> {
 
-    List<Connection> findConnectionsByOwner_Email(String ownerUserEmail);
+    List<Connection> findConnectionsByOwner_EmailAndOwner_Role(String ownerUserEmail, String ownerUserRole);
 }

@@ -121,8 +121,8 @@ public class UserServiceTest {
         // User1 is connected with User2
         List<Connection> connectionsOfCurrentUser = List.of(Connection.builder().owner(user1).receiver(user2).build());
 
-        when(userRepository.findUsersByEmailIsNot(currentUserEmail)).thenReturn(otherUsers);
-        when(connectionRepository.findConnectionsByOwner_Email(currentUserEmail)).thenReturn(connectionsOfCurrentUser);
+        when(userRepository.findUsersByEmailIsNotAndRole(currentUserEmail, "USER")).thenReturn(otherUsers);
+        when(connectionRepository.findConnectionsByOwner_EmailAndOwner_Role(currentUserEmail, "USER")).thenReturn(connectionsOfCurrentUser);
 
         // Connectable user is just User3
         List<User> connectableUsers = userService.getConnectableUsers(currentUserEmail);
@@ -142,8 +142,8 @@ public class UserServiceTest {
         // User1 is not connected with other users
         List<Connection> connectionsOfCurrentUser = List.of();
 
-        when(userRepository.findUsersByEmailIsNot(currentUserEmail)).thenReturn(otherUsers);
-        when(connectionRepository.findConnectionsByOwner_Email(currentUserEmail)).thenReturn(connectionsOfCurrentUser);
+        when(userRepository.findUsersByEmailIsNotAndRole(currentUserEmail, "USER")).thenReturn(otherUsers);
+        when(connectionRepository.findConnectionsByOwner_EmailAndOwner_Role(currentUserEmail, "USER")).thenReturn(connectionsOfCurrentUser);
 
         // Connectable are all other users, User2 and User3
         List<User> connectableUsers = userService.getConnectableUsers(currentUserEmail);
@@ -158,7 +158,7 @@ public class UserServiceTest {
         User user1 = User.builder().userId(1).email("user1@example.com").build(); // Current user
         String currentUserEmail = user1.getEmail();
 
-        when(userRepository.findUsersByEmailIsNot(currentUserEmail)).thenReturn(Collections.emptyList());
+        when(userRepository.findUsersByEmailIsNotAndRole(currentUserEmail, "USER")).thenReturn(Collections.emptyList());
 
         List<User> connectableUsers = userService.getConnectableUsers(currentUserEmail);
 

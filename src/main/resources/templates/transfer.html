@@ -127,10 +127,13 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li th:each="page, status : ${pages}" th:unless="${pages.length == 1}" class="page-item">
-                    <a th:href="@{/transfer(currentPageNumber = ${status.index})}" th:text="${status.index + 1}" class="page-link" href="#"></a>
+                <li th:each="page, status : ${pages}" th:unless="${pages.length <= 1}" class="page-item">
+                    <a th:href="@{/transfer(currentPageNumber = ${status.index})}"
+                       th:text="${status.index + 1}"
+                       th:classappend="${status.index == currentPageNumber ? 'fw-bold' : ''}"
+                       class="page-link" href="#"></a>
                 </li>
-                <li class="page-item" th:unless="${currentPageNumber == pages.length - 1}">
+                <li class="page-item" th:unless="${currentPageNumber == pages.length - 1 || pages.length == 0}">
                     <a th:href="@{/transfer(currentPageNumber = ${currentPageNumber + 1})}" class="page-link" href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

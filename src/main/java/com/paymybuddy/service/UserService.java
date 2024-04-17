@@ -30,8 +30,8 @@ public class UserService {
     }
 
     public List<User> getConnectableUsers(String currentUserEmail) {
-        List<User> connectableUsers = userRepository.findUsersByEmailIsNot(currentUserEmail);
-        List<Connection> connectionsOfCurrentUser = connectionRepository.findConnectionsByOwner_Email(currentUserEmail);
+        List<User> connectableUsers = userRepository.findUsersByEmailIsNotAndRole(currentUserEmail, "USER");
+        List<Connection> connectionsOfCurrentUser = connectionRepository.findConnectionsByOwner_EmailAndOwner_Role(currentUserEmail, "USER");
 
         connectableUsers.removeAll(connectionsOfCurrentUser.stream().map(Connection::getReceiver).toList());
 

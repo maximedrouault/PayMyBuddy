@@ -10,19 +10,25 @@
 </head>
 
 <body>
+
+<!--Login Form-->
     <form class="container" th:action="@{/login}" method="post">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="col-11 col-md-6 col-lg-5 col-xxl-4 p-4 border border-2 rounded-3">
                 <div class="row mb-5 mt-3 justify-content-center">
                     <h1 class="col-8 col-md-6 btn btn-lg btn-success bg-gradient text-light" href="#">Pay My Buddy</h1>
                 </div>
-                <div class="row mb-5">
-                    <label for="username"></label>
-                    <input type="email" class="form-control fs-5" id="username" name="username" placeholder="Email" required aria-describedby="email">
+                <div class="input-group mb-5">
+                    <label class="input-group-text border-end-0 bg-white" for="username">
+                        <i class="bi bi-envelope"></i>
+                    </label>
+                    <input type="email" class="form-control border-start-0 fs-5" id="username" name="username" placeholder="Email" aria-label="Username" aria-describedby="email">
                 </div>
-                <div class="row mb-4">
-                    <label for="password"></label>
-                    <input type="password" class="form-control fs-5" id="password" name="password" required placeholder="Password">
+                <div class="input-group mb-5">
+                    <label class="input-group-text border-end-0 bg-white" for="password">
+                        <i class="bi bi-asterisk"></i>
+                    </label>
+                    <input type="password" class="form-control border-start-0 fs-5" id="password" name="password" placeholder="Password" aria-label="Password" aria-describedby="password">
                 </div>
                 <div class="row">
                     <div class="col text-center mb-3">
