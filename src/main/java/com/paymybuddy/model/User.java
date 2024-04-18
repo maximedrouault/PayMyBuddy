@@ -10,6 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
+/**
+ * Entity class representing a user in the PayMyBuddy application.
+ * This class includes fields for the user's id, email, password, role, name, bank account number, and wallet.
+ */
 @Entity
 @Data
 @Builder
@@ -44,7 +48,10 @@ public class User {
     @NotBlank
     private String bankAccountNumber;
 
-
+    /**
+     * The wallet of the user.
+     * This field is a reference to the Wallet entity associated with the user.
+     */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false, orphanRemoval = true)
     @JoinColumn(name = "wallet_id")
     @NotNull

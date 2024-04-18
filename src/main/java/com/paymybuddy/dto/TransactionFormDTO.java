@@ -9,6 +9,10 @@ import java.math.BigDecimal;
 import static com.paymybuddy.constant.Constant.MAX_AMOUNT;
 import static com.paymybuddy.constant.Constant.MIN_AMOUNT;
 
+/**
+ * DTO for TransactionForm. Used to transfer transaction form data within the application.
+ * It is used to add a transaction between two users and control the inputs entered.
+ */
 @Data
 public class TransactionFormDTO {
 

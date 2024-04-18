@@ -11,6 +11,10 @@ import java.math.BigDecimal;
 import static com.paymybuddy.constant.Constant.MAX_AMOUNT;
 import static com.paymybuddy.constant.Constant.MIN_AMOUNT;
 
+/**
+ * DTO for WalletWithdrawForm. Used to transfer wallet withdraw form data within the application.
+ * It is used to withdraw money from the wallet of the user and control the inputs entered.
+ */
 @Data
 public class WalletWithdrawFormDTO {
 

@@ -8,10 +8,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Security Configuration for the application.
+ * This class is responsible for configuring the security aspects of the application.
+ * It defines the security filter chain and the password encoder bean.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Defines the security filter chain for the application.
+     * This method configures the security aspects such as URL access restrictions, form login, logout and remember me functionality.
+     *
+     * @param httpSecurity the HttpSecurity to modify
+     * @return the SecurityFilterChain
+     * @throws Exception if an error occurs
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -34,6 +47,12 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    /**
+     * Defines the password encoder for the application.
+     * This method returns a BCryptPasswordEncoder which is a password encoder that uses the BCrypt strong hashing function.
+     *
+     * @return the PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

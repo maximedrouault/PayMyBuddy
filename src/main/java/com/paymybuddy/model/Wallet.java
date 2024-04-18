@@ -13,6 +13,11 @@ import java.math.BigDecimal;
 
 import static com.paymybuddy.constant.Constant.MAX_AMOUNT;
 
+/**
+ * Entity class representing a wallet of a user in the PayMyBuddy application.
+ * This class includes fields for the wallet's id and balance.
+ * It also includes methods for adding and withdrawing money from the wallet.
+ */
 @Entity
 @Data
 @Builder
@@ -31,10 +36,22 @@ public class Wallet {
     private BigDecimal balance;
 
 
+    /**
+     * Withdraws a specified amount from the wallet balance.
+     *
+     * @param amountToWithdraw The amount to be withdrawn from the wallet balance.
+     * This method subtracts the specified amount from the current wallet balance.
+     */
     public void withdrawMoney(BigDecimal amountToWithdraw) {
         this.balance = this.balance.subtract(amountToWithdraw);
     }
 
+    /**
+     * Adds a specified amount to the wallet balance.
+     *
+     * @param amountToAdd The amount to be added to the wallet balance.
+     * This method adds the specified amount to the current wallet balance.
+     */
     public void addMoney(BigDecimal amountToAdd) {
         this.balance = this.balance.add(amountToAdd);
     }

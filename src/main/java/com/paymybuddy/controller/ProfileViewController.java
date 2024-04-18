@@ -20,13 +20,22 @@ import java.security.Principal;
 
 import static com.paymybuddy.constant.Constant.MAX_BALANCE;
 
+/**
+ * Controller for handling profile view requests.
+ */
 @Controller
 @RequiredArgsConstructor
 public class ProfileViewController {
 
+    // Service for user-related operations
     private final UserService userService;
 
-
+    /**
+     * Populates the model with the current user and form DTOs.
+     *
+     * @param principal the current user's principal
+     * @param model the model to populate
+     */
     @ModelAttribute
     public void populateModel(@NotNull Principal principal, Model model) {
         User currentUser = userService.getUserByEmail(principal.getName());
@@ -36,12 +45,26 @@ public class ProfileViewController {
         model.addAttribute("walletWithdrawFormDTO", new WalletWithdrawFormDTO());
     }
 
-
+    /**
+     * Handles GET requests to the /profile endpoint.
+     *
+     * @return the profile view.
+     */
     @GetMapping("/profile")
     public String profileView() {
         return "profile";
     }
 
+    /**
+     * Handles POST requests to the /profile/add endpoint.
+     * Adds money to the current user's wallet.
+     *
+     * @param walletAddFormDTO the form DTO with the amount to add
+     * @param principal the current user's principal
+     * @param result the binding result of the form DTO
+     * @param redirectAttributes the redirect attributes
+     * @return the profile view
+     */
     @PostMapping("/profile/add")
     public String addMoneyToWallet(@Valid @ModelAttribute WalletAddFormDTO walletAddFormDTO,
                                    @NotNull Principal principal, BindingResult result,
@@ -67,6 +90,16 @@ public class ProfileViewController {
         return "redirect:/profile";
     }
 
+    /**
+     * Handles POST requests to the /profile/withdraw endpoint.
+     * Withdraws money from the current user's wallet.
+     *
+     * @param walletWithdrawFormDTO the form DTO with the amount to withdraw
+     * @param principal the current user's principal
+     * @param result the binding result of the form DTO
+     * @param redirectAttributes the redirect attributes
+     * @return the profile view
+     */
     @PostMapping("/profile/withdraw")
     public String withdrawMoneyFromWallet(@Valid @ModelAttribute WalletWithdrawFormDTO walletWithdrawFormDTO,
                                           @NotNull Principal principal, BindingResult result,

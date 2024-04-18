@@ -27,15 +27,25 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
+/**
+ * Controller for handling transfer view requests.
+ */
 @Controller
 @RequiredArgsConstructor
 public class TransferViewController {
 
+    // Services for connection, transaction, and user-related operations
     private final ConnectionService connectionService;
     private final TransactionService transactionService;
     private final UserService userService;
 
-
+    /**
+     * Populates the model with the current user, connections, transactions, and form DTOs.
+     *
+     * @param principal the current user's principal
+     * @param currentPageNumber the current page number for transactions
+     * @param model the model to populate
+     */
     @ModelAttribute
     public void populateModel(@NotNull Principal principal, @RequestParam(defaultValue = "0") @Min(0) int currentPageNumber, Model model) {
         List<Connection> connections = connectionService.getConnections(principal.getName());
@@ -51,12 +61,26 @@ public class TransferViewController {
         model.addAttribute("currentPageNumber", currentPageNumber);
     }
 
-
+    /**
+     * Handles GET requests to the /transfer endpoint.
+     *
+     * @return the transfer view.
+     */
     @GetMapping("/transfer")
     public String transferView() {
         return "transfer";
     }
 
+    /**
+     * Handles POST requests to the /connection endpoint.
+     * Adds a connection between the current user and another user.
+     *
+     * @param principal the current user's principal
+     * @param connectionFormDTO the form DTO with the receiver user's ID
+     * @param result the binding result of the form DTO
+     * @param redirectAttributes the redirect attributes
+     * @return the transfer view
+     */
     @PostMapping("/connection")
     public String addConnection(@NotNull Principal principal,
                                 @Valid @ModelAttribute ConnectionFormDTO connectionFormDTO,
@@ -82,6 +106,16 @@ public class TransferViewController {
         return "redirect:/transfer";
     }
 
+    /**
+     * Handles POST requests to the /transaction endpoint.
+     * Adds a transaction from the current user to another user.
+     *
+     * @param principal the current user's principal
+     * @param transactionFormDTO the form DTO with the transaction details
+     * @param result the binding result of the form DTO
+     * @param redirectAttributes the redirect attributes
+     * @return the transfer view
+     */
     @PostMapping("/transaction")
     public String addTransaction(@NotNull Principal principal,
                                  @Valid @ModelAttribute TransactionFormDTO transactionFormDTO,
