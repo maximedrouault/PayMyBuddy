@@ -1,3 +1,64 @@
+create table wallet
+(
+    balance   decimal(10, 2) not null,
+    wallet_id int auto_increment
+        primary key,
+    check (`balance` >= 0)
+);
+
+create table user
+(
+    user_id             int auto_increment
+        primary key,
+    wallet_id           int          not null,
+    role                varchar(5)   not null,
+    name                varchar(50)  not null,
+    bank_account_number varchar(100) not null,
+    email               varchar(100) not null,
+    password            varchar(100) not null,
+    constraint UK_ob8kqyqqgmefl0aco34akdtpe
+        unique (email),
+    constraint UK_qdajoj4ecbjj1u8sq5fqra57g
+        unique (wallet_id),
+    constraint FKk6idbdh9djaqcjclrgr9x5h4p
+        foreign key (wallet_id) references wallet (wallet_id)
+);
+
+create table connection
+(
+    connection_id    int auto_increment
+        primary key,
+    owner_user_id    int not null,
+    receiver_user_id int not null,
+    constraint UKtrv7ug3pgao3073qiaeoye3vh
+        unique (owner_user_id, receiver_user_id),
+    constraint FKdkmrtpiogmbte96ysub8nn4mh
+        foreign key (receiver_user_id) references user (user_id),
+    constraint FKpedokxksh8bpwif98v9hk3cqy
+        foreign key (owner_user_id) references user (user_id),
+    check (`owner_user_id` <> `receiver_user_id`)
+);
+
+create table transaction
+(
+    commission_amount  decimal(10, 2) not null,
+    date               date           not null,
+    receiver_user_id   int            not null,
+    sender_user_id     int            not null,
+    time               time           not null,
+    transaction_amount decimal(10, 2) not null,
+    transaction_id     int auto_increment
+        primary key,
+    description        varchar(100)   not null,
+    constraint FKo9uqotblajd4b89pnpkdtfen3
+        foreign key (sender_user_id) references user (user_id),
+    constraint FKpwbld336qs0e5s0r0igsosn42
+        foreign key (receiver_user_id) references user (user_id),
+    check (`commission_amount` >= 0),
+    check (`sender_user_id` <> `receiver_user_id`)
+);
+
+
 INSERT INTO wallet (wallet_id, balance)
 VALUES  (1, 1200.00),
         (2, 2300.50),
