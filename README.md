@@ -20,6 +20,14 @@ PayMyBuddy est une application Spring Boot conçue pour faciliter les transactio
 - MySQL pour stocker les données des utilisateurs, des connexions, des transactions et des commissions.
 - Bootstrap pour la conception de l'interface utilisateur, web et mobile.
 
+## Diagramme de Classes UML
+
+![UML Diagram](diagrams/UMLClassDiagram.png)
+
+## Modèle physique de données
+
+![UML Diagram](diagrams/physicalDataModel.png)
+
 ## Installation
 
 Pour installer et exécuter ce projet, vous aurez besoin de Java, Maven et MySQL. Voici les étapes à suivre :
